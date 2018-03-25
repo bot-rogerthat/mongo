@@ -12,19 +12,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.4.RELEASE</version>
+		<version>2.0.0.RELEASE</version>
 	</parent>
 
 	<properties>
 		<project.build.sorceEncoding>UTF-8</project.build.sorceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<postgreSQL.ver>9.4.1208</postgreSQL.ver>
 		<fileupload.ver>1.3.1</fileupload.ver>
 		<commons-io.ver>1.3.2</commons-io.ver>
 		<commons-codec.ver>1.10</commons-codec.ver>
 		<commons-lang3-ver>3.0</commons-lang3-ver>
 		<commons-dbcp2-ver>2.1.1</commons-dbcp2-ver>
+		<mongodb-version>3.6.3</mongodb-version>
 	</properties>
 
 	<dependencies>
@@ -49,13 +49,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.tomcat</groupId>
-					<artifactId>tomcat-jdbc</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -85,11 +79,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--postgreSql-->
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgreSQL.ver}</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${mongodb.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!--fileupload-->

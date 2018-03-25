@@ -1,9 +1,7 @@
 package com.example.controller;
 
 import com.example.model.User;
-import com.example.service.UserService;
-import com.example.util.TimestampPropertyEditor;
-import com.example.validator.UserFormValidator;
+import com.example.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -25,16 +21,7 @@ public class UserController {
 	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private UserFormValidator userFormValidator;
-
-	@InitBinder
-	public void initBinderDate(WebDataBinder binder) {
-		binder.registerCustomEditor(Timestamp.class, new TimestampPropertyEditor());
-		binder.setValidator(userFormValidator);
-	}
+	private UserServiceImpl userServiceImpl;
 
 	@GetMapping("/")
 	public String redirectIndex() {
@@ -45,7 +32,7 @@ public class UserController {
 	@GetMapping("/users")
 	public String showAllUsers(@RequestParam Map<String, String> params, ModelMap model) {
 		LOG.info("showAllUsers()");
-		model.put("users", userService.getSortUsers(params.get("sort")));
+		model.put("users", userServiceImpl.getSortUsers(params.get("sort")));
 		return "users";
 	}
 
@@ -57,8 +44,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}/update")
-	public String showUpdateUserForm(@PathVariable(value = "id") Long id, ModelMap model) {
-		User user = userService.getById(id);
+	public String showUpdateUserForm(@PathVariable(value = "id") String id, ModelMap model) {
+		User user = userServiceImpl.getById(id);
 		LOG.info("showUpdateUserForm() : {}", user);
 		model.put("user", user);
 		return "updateUser";
@@ -66,7 +53,7 @@ public class UserController {
 
 	@PostMapping("/find")
 	public String findUser(@RequestParam(value = "name") String name, ModelMap model) {
-		List<User> users = userService.getByName(name);
+		List<User> users = userServiceImpl.getByName(name);
 		LOG.info("findUser() : {}", users);
 		model.put("users", users);
 		return "users";
@@ -80,8 +67,8 @@ public class UserController {
 			return "updateUser";
 		} else {
 			LOG.info("updateUser() : {}", user);
-			userService.addImage(user, file);
-			userService.save(user);
+			userServiceImpl.addImage(user, file);
+			userServiceImpl.saveOrUpdate(user);
 			return "redirect:/users";
 		}
 	}
@@ -94,16 +81,23 @@ public class UserController {
 			return "addUser";
 		} else {
 			LOG.info("addUser() : {}", user);
-			userService.addImage(user, file);
-			userService.save(user);
+			userServiceImpl.addImage(user, file);
+			userServiceImpl.saveOrUpdate(user);
 			return "redirect:/users";
 		}
 	}
 
 	@GetMapping("/users/{id}/delete")
-	public String deleteUser(@PathVariable(value = "id") Long id) {
+	public String deleteUser(@PathVariable(value = "id") String id) {
 		LOG.info("deleteUser() : {}", id);
-		userService.delete(id);
+		userServiceImpl.delete(id);
 		return "redirect:/users";
+	}
+
+	@GetMapping("/count")
+	public String showCount(ModelMap model) {
+		LOG.info("showCount()");
+		model.put("count", userServiceImpl.getCount());
+		return "count";
 	}
 }

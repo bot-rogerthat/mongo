@@ -1,28 +1,32 @@
 package com.example.model;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.beans.Transient;
-import java.sql.Timestamp;
+import java.util.Date;
 
-@Entity
-@Table(name = "users")
+@Document
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private ObjectId id;
+	@Indexed
 	private String name;
 	private String email;
-	private Timestamp dayOfBirth;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dayOfBirth;
 	private byte[] image;
 	private String base64;
 
-	public Long getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
@@ -42,11 +46,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Timestamp getDayOfBirth() {
+	public Date getDayOfBirth() {
 		return dayOfBirth;
 	}
 
-	public void setDayOfBirth(Timestamp dayOfBirth) {
+	public void setDayOfBirth(Date dayOfBirth) {
 		this.dayOfBirth = dayOfBirth;
 	}
 

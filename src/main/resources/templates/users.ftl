@@ -37,46 +37,46 @@
 	</tr>
 </table>
 <#if users?has_content>
-	<h2><@spring.message "label.users"/></h2>
-	<table>
-		<thead>
-		<tr>
-			<th>
-				<@spring.message "prop.name"/>
-				<a href="<@spring.url "users?sort=name"/>">^</a>
-			</th>
-			<th>
-				<@spring.message "prop.email"/>
-				<a href='<@spring.url "users?sort=email"/>'>^</a>
-			</th>
-			<th><@spring.message "prop.dayOfBirth"/></th>
-			<th><@spring.message "prop.image"/></th>
-			<th><@spring.message "prop.action"/></th>
-		</tr>
-		</thead>
-		<tbody>
-			<#list users as user>
-			<tr>
-				<td>${user.name}</td>
-				<td>${user.email}</td>
-				<td>${user.dayOfBirth?string("dd-MM-yyyy")}</td>
-				<td>
-					<#if user.base64?has_content>
-						<img src="data:image/jpg;base64,${user.base64}" width="50" height="50"/>
-					<#else>
-						<@spring.message "label.notImage"/>
-					</#if>
-				</td>
-				<td>
-					<input type="submit" value='<@spring.message "label.edit"/>'
-						   onclick="location.href='<@spring.url "users/${user.id}/update"/>'"/>
-					<input type="submit" value='<@spring.message "label.delete"/>'
-						   onclick="location.href='<@spring.url "users/${user.id}/delete"/>'"/>
-				</td>
-			</tr>
-			</#list>
-		</tbody>
-	</table>
+<h2><@spring.message "label.users"/> (<a href='<@spring.url "/count"/>'><@spring.message "label.count"/></a>)</h2>
+<table>
+	<thead>
+	<tr>
+		<th>
+			<@spring.message "prop.name"/>
+			<a href="<@spring.url "users?sort=name"/>">^</a>
+		</th>
+		<th>
+			<@spring.message "prop.email"/>
+			<a href='<@spring.url "users?sort=email"/>'>^</a>
+		</th>
+		<th><@spring.message "prop.dayOfBirth"/></th>
+		<th><@spring.message "prop.image"/></th>
+		<th><@spring.message "prop.action"/></th>
+	</tr>
+	</thead>
+	<tbody>
+	<#list users as user>
+	<tr>
+		<td>${user.name}</td>
+		<td>${user.email}</td>
+		<td>${user.dayOfBirth?string("dd-MM-yyyy")}</td>
+		<td>
+			<#if user.base64?has_content>
+			<img src="data:image/jpg;base64,${user.base64}" width="50" height="50"/>
+			<#else>
+			<@spring.message "label.notImage"/>
+		</#if>
+		</td>
+		<td>
+			<input type="submit" value='<@spring.message "label.edit"/>'
+				   onclick="location.href='<@spring.url "users/${user.id}/update"/>'"/>
+			<input type="submit" value='<@spring.message "label.delete"/>'
+				   onclick="location.href='<@spring.url "users/${user.id}/delete"/>'"/>
+		</td>
+	</tr>
+	</#list>
+	</tbody>
+</table>
 <#else>
 	<h2><@spring.message "label.notFound"/></h2>
 </#if>
